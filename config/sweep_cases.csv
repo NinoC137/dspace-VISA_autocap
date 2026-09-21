@@ -1,0 +1,16 @@
+case_id,enabled,VL_V,xi,ud_ref6,ud_ref7,phi_deg,note
+01,true,120,0.80,60,60,118,figure2_row1
+02,true,160,0.85,60,60,119,figure2_row2
+03,true,140,0.80,60,60,123,figure2_row3
+04,true,140,0.85,60,60,116,figure2_row4
+05,true,140,0.45,60,60,120,figure2_row5
+06,true,120,0.35,60,60,123,figure2_row6
+07,true,160,0.55,60,60,117,figure2_row7
+08,true,100,0.20,60,60,115,figure2_row8
+A050,true,120,0.50,60,60,180,figure2_control_A_step_0.01
+A051,true,120,0.51,60,60,180,figure2_control_A_step_0.01
+A052,true,120,0.52,60,60,180,figure2_control_A_step_0.01
+A053,true,120,0.53,60,60,180,figure2_control_A_step_0.01
+A054,true,120,0.54,60,60,180,figure2_control_A_step_0.01
+A055,true,120,0.55,60,60,180,figure2_control_A_step_0.01
+B,true,140,0.30,60,60,102,figure2_control_B

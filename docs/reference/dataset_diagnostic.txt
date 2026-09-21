@@ -1,0 +1,321 @@
+﻿PROJECT: Project_PACC
+EXPERIMENT: Experiment_PACC
+dSPACE.PlatformManagement.Automation.Capabilities
+None=0
+Calibration=1
+Measurement=2
+MeasurementAndCalibration=3
+dSPACE.PlatformManagement.Automation.IOPlatformType
+Unknown=0
+DS2001=1
+DS2002=2
+DS2003=3
+DS2004=4
+DS2101=5
+DS2102=6
+DS2103=7
+DS2201=8
+DS2202=9
+DS2210=10
+DS2211=11
+DS2301=12
+DS2302=13
+DS2401=14
+DS3001=15
+DS3002=16
+DS4001=17
+DS4002=18
+DS4003=19
+DS4101=20
+DS4110=21
+DS4120=22
+DS4121=23
+DS4201=24
+DS4301=25
+DS4302=26
+DS4330=27
+DS4401=28
+DS4501=29
+DS4502=30
+DS4503=31
+DS5001=32
+DS5101=33
+DS5201=34
+DS5202=35
+DS4504=36
+DS4505=37
+DS4201S=38
+DS2601=39
+DS2621=40
+DS2642=41
+DS2671=42
+DS2901=43
+DS5203=44
+DS4004=45
+DS802=46
+DS2551=47
+DS2502=48
+DS2672=49
+DS2680=50
+DS2680RT=51
+DS2907=52
+DS2690=53
+DS2702=54
+DS2703=55
+DS2655=56
+DS2908=57
+DS2656=58
+DS6301=59
+DS6072=60
+DS6331=61
+DS6332=62
+DS6341=63
+DS6351=64
+DS6411=65
+DS6221=66
+DS6101=67
+DS6201=68
+DS6202=69
+DS6311=70
+DS6071=71
+DS6241=72
+DS6333=73
+DS6334=74
+DS6335=75
+DS6601=76
+DS6602=77
+DS6121=78
+DS6321=79
+DS1511=80
+DS1513=81
+DS1514=82
+DS1521=83
+DS6342=84
+DS6651=85
+DS6336=86
+DS6344=87
+DS1522=88
+dSPACE.PlatformManagement.Automation.OnlineCalibrationBehavior
+PromptUser=0
+UploadWorkingPageDownloadReferencePage=1
+DownloadWorkingPageUploadReferencePage=2
+DownloadWorkingPageDownloadReferencePage=3
+UploadWorkingPageUploadReferencePage=4
+UploadConnectedVariables=5
+IgnoreDifferences=6
+Upload=7
+Download=8
+DownloadConnectedVariables=9
+dSPACE.PlatformManagement.Automation.PlatformCalibrationState
+Stopped=0
+Started=1
+dSPACE.PlatformManagement.Automation.PlatformProposedCalibrationState
+Stopped=0
+Started=1
+dSPACE.PlatformManagement.Automation.PlatformType
+MABX=0
+CANDataOutput=1
+GME=2
+DS1005=3
+XCPonCAN=4
+XCPonUSB=5
+CCP=6
+GSI=7
+RapidPro=8
+RapidProIO=9
+CANMonitoring=10
+IpetronikSIM=11
+IMCCansas=12
+CSMScanMess=13
+Diagnostic=14
+DS1103=15
+DS1104=16
+DS1006=17
+MultiProcessor=18
+LINMonitoring=19
+XCPonEthernet=20
+XCPonFlexRay=21
+SCALEXIO=22
+NotInUse=23
+FlexRayMonitoring=24
+GSI2=25
+VEOS=26
+Diagnostic2=27
+VideoCapturing=28
+DS1007=29
+DS1202=30
+XILAPIMAPort=31
+EthernetMonitoring=32
+DS1403=33
+GNSS=34
+
+
+Name             : Platform
+ConnectionState  : 0
+CalibrationState : 1
+MeasurementState : 1
+
+
+
+DATASET MEMBERS
+
+
+   TypeName: System.__ComObject#{3db9d2e2-b8d2-4147-a985-cef64d97c6f9}
+
+Name                           MemberType Definition                                     
+----                           ---------- ----------                                     
+CheckForInconsistentParameters Method     Variant CheckForInconsistentParameters (string)
+Contains                       Method     bool Contains (string)                         
+Create                         Method     IXaDataSet Create ()                           
+CreateDataSetFromOpenLayouts   Method     IXaDataSet CreateDataSetFromOpenLayouts ()     
+GetEnumerator                  Method     IEnumVARIANT GetEnumerator ()                  
+Import                         Method     IXaDataSet Import (string)                     
+Item                           Method     IXaDataSet Item (Variant)                      
+ActiveDataSet                  Property   IXaDataSet ActiveDataSet () {get}              
+Count                          Property   int Count () {get}                             
+ReferenceDataSet               Property   IXaDataSet ReferenceDataSet () {get}           
+WorkingDataSet                 Property   IXaDataSet WorkingDataSet () {get}             
+
+
+
+DATASET PROPERTIES
+
+
+Count           : 0
+WorkingIsNull   : True
+ActiveIsNull    : True
+ReferenceIsNull : True
+PlatformType    : 30
+Capabilities    : 3
+
+
+
+GENERAL SETTINGS
+
+
+EnforceStartingRealtimeApplication   : True
+StartRealtimeApplicationAfterLoading : True
+ResumeOnlineCalibrationBehavior      : 5
+AutomaticReconnectBehavior           : 1
+EnableResynchronizePlatform          : True
+EnablePlatform                       : True
+StartOnlineCalibrationBehavior       : 5
+
+
+
+
+DATASET ITEMS
+PLATFORM MEMBERS
+
+
+   TypeName: System.__ComObject#{15b7a4b2-3ac9-411b-ae80-86678a75165e}
+
+Name                      MemberType Definition                                                         
+----                      ---------- ----------                                                         
+CanStartMeasurement       Method     bool CanStartMeasurement ()                                        
+CanStartOnlineCalibration Method     bool CanStartOnlineCalibration ()                                  
+CanStopMeasurement        Method     bool CanStopMeasurement ()                                         
+CanStopOnlineCalibration  Method     bool CanStopOnlineCalibration ()                                   
+Connect                   Method     void Connect ()                                                    
+Disconnect                Method     void Disconnect ()                                                 
+StartMeasurement          Method     void StartMeasurement ()                                           
+StartOnlineCalibration    Method     void StartOnlineCalibration ()                                     
+StopMeasurement           Method     void StopMeasurement ()                                            
+StopOnlineCalibration     Method     void StopOnlineCalibration ()                                      
+ActiveVariableDescription Property   Variant ActiveVariableDescription () {get}                         
+AssignedPlatform          Property   Variant AssignedPlatform () {get}                                  
+Assignment                Property   IPmDS1202Assignment Assignment () {get}                            
+CalibrationState          Property   PlatformCalibrationState CalibrationState () {get}                 
+Capabilities              Property   Capabilities Capabilities () {get}                                 
+ConnectionState           Property   ConnectionState ConnectionState () {get}                           
+DisplayName               Property   string DisplayName () {get}                                        
+GeneralSettings           Property   IPmDS1202GeneralSettings GeneralSettings () {get}                  
+MeasurementState          Property   MeasurementState MeasurementState () {get}                         
+Name                      Property   string Name () {get}                                               
+Platforms                 Property   IPmExperimentPlatformsCollection Platforms () {get}                
+PlugState                 Property   PlugState PlugState () {get}                                       
+ProposedCalibrationState  Property   PlatformProposedCalibrationState ProposedCalibrationState () {get} 
+Type                      Property   PlatformType Type () {get}                                         
+VariableDescriptions      Property   Variant VariableDescriptions () {get}                              
+
+
+
+ENABLE MEMBERS
+
+
+   TypeName: System.__ComObject#{68e7b6c1-6ed5-4b0b-a0e5-6a0384916cfc}
+
+Name                                 MemberType Definition                                         
+----                                 ---------- ----------                                         
+AddressInformation                   Property   IXaAddressInformation AddressInformation () {get}  
+Bitmask                              Property   Variant Bitmask () {get}                           
+Description                          Property   string Description () {get}                        
+DisplayIdentifier                    Property   string DisplayIdentifier () {get}                  
+FormatString                         Property   string FormatString () {get}                       
+HardLimits                           Property   IXaRange HardLimits () {get}                       
+Identifier                           Property   IXaVariableIdentifier Identifier () {get}          
+IsChangeableOnlyDuringInitialization Property   bool IsChangeableOnlyDuringInitialization () {get} 
+IsReadable                           Property   bool IsReadable () {get}                           
+IsReference                          Property   bool IsReference () {get}                          
+IsVisible                            Property   bool IsVisible () {get}                            
+IsWritable                           Property   bool IsWritable () {get}                           
+Name                                 Property   string Name () {get}                               
+Origin                               Property   string Origin () {get}                             
+ReferencedVariable                   Property   Variant ReferencedVariable () {get}                
+ReferencingVariables                 Property   IXaVariables ReferencingVariables () {get}         
+Scaling                              Property   Variant Scaling () {get}                           
+Type                                 Property   VariableType Type () {get}                         
+TypeDefinition                       Property   IXaTypeDefinition TypeDefinition () {get}          
+Unit                                 Property   string Unit () {get}                               
+ValueConverted                       Property   Variant ValueConverted () {get} {set by ref}       
+ValueSource                          Property   Variant ValueSource () {get} {set by ref}          
+WeakLimits                           Property   IXaRange WeakLimits () {get}                       
+
+
+
+CURRENT PARAMETERS
+
+
+Name     : Enable1
+Value    : 0
+Readable : True
+Writable : True
+
+
+
+
+
+Name     : Constant3
+Value    : 0.6
+Readable : True
+Writable : True
+
+
+
+
+
+Name     : ud_ref6
+Value    : 60
+Readable : True
+Writable : True
+
+
+
+
+
+Name     : ud_ref7
+Value    : 60
+Readable : True
+Writable : True
+
+
+
+
+
+Name     : phi2_deg
+Value    : 0
+Readable : True
+Writable : True
+
+
+

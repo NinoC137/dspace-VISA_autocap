@@ -1,0 +1,16 @@
+﻿CHECK OK: parameter paths and 2 waveform groups; CalibrationState=0
+Read-only check. No parameters, recorders or measurement state changed.
+STATE UNCHANGED
+{
+    "Calibration":  0,
+    "Measurement":  0,
+    "IsMeasuring":  false,
+    "RecorderCount":  1,
+    "Values":  {
+                   "ud_ref6":  60,
+                   "Constant3":  0.4,
+                   "Enable1":  0,
+                   "phi2_deg":  0,
+                   "ud_ref7":  60
+               }
+}

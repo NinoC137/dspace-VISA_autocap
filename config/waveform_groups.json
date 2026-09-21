@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "meas1abc",
+    "Layout": "Layout1",
+    "Instrument": "Time Plotter_25",
+    "Signals": [
+      "Platform(HostService)://Model Root/measa1/In1",
+      "Platform(HostService)://Model Root/measb1/In1",
+      "Platform(HostService)://Model Root/measc1/In1"
+    ]
+  },
+  {
+    "Name": "meas2abc",
+    "Layout": "Layout1",
+    "Instrument": "Time Plotter_26",
+    "Signals": [
+      "Platform(HostService)://Model Root/measa2/In1",
+      "Platform(HostService)://Model Root/measb2/In1",
+      "Platform(HostService)://Model Root/measc2/In1"
+    ]
+  }
+]

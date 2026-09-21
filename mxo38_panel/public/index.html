@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MXO38 远程面板</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div id="busybar" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="nameplate">
+    <h1>MXO38 远程面板</h1>
+    <p id="idn">正在连接树莓派…</p>
+  </div>
+
+  <div class="runkeys" role="group" aria-label="运行控制">
+    <button id="btn-run" class="key" data-run="run">连续</button>
+    <button id="btn-stop" class="key" data-run="stop">停止</button>
+    <button id="btn-single" class="key" data-run="single">单次</button>
+    <label class="wait">等待 <input id="single-wait" type="number" min="0" max="600" step="1" value="10"> s</label>
+    <div class="acqcount">
+      <span id="acq-count">—</span>
+      <small id="acq-trend">采集计数</small>
+    </div>
+  </div>
+
+  <div class="linkbox">
+    <div><span class="dot" id="link-dot"></span><span id="link-text">未连接</span></div>
+    <div id="bench-text" class="bench"></div>
+    <label id="force-wrap" class="force hidden"><input type="checkbox" id="force"> 忽略台架占用，强制写入</label>
+  </div>
+</header>
+
+<nav class="tools">
+  <button id="btn-refresh">刷新</button>
+  <label>自动刷新
+    <select id="auto">
+      <option value="0">关</option>
+      <option value="5">每 5 s</option>
+      <option value="15" selected>每 15 s</option>
+      <option value="60">每 60 s</option>
+    </select>
+  </label>
+  <label><input type="checkbox" id="auto-shot"> 同时刷新截图</label>
+  <span class="sep"></span>
+  <button id="btn-snapshot">保存快照</button>
+  <select id="snap-list"><option value="">恢复快照…</option></select>
+  <button id="btn-restore">恢复</button>
+  <button id="btn-undo" disabled>撤销上一步</button>
+  <span class="sep"></span>
+  <select id="view-preset">
+    <option value="">界面预设…</option>
+    <option value="clean">clean 纯波形</option>
+    <option value="bare">bare 无网格无标签</option>
+    <option value="analysis">analysis 细网格十字线余辉</option>
+    <option value="default">default 交付时样式</option>
+  </select>
+  <button id="btn-errors">错误队列</button>
+  <button id="btn-autoset">Autoset</button>
+  <button id="btn-recover">链路救援</button>
+</nav>
+
+<main class="grid">
+  <section class="channels">
+    <h2>通道与探头</h2>
+    <div class="scroll">
+      <table id="ch-table">
+        <thead>
+          <tr>
+            <th>开</th><th>通道</th><th>单位</th><th>每格</th><th>偏置</th><th>位置</th>
+            <th>耦合</th><th>带宽</th><th>反相</th><th>探头衰减</th>
+          </tr>
+        </thead>
+        <tbody id="ch-body"></tbody>
+      </table>
+    </div>
+    <p class="note">在输入框里改完按回车才会写入仪器；按 Esc 放弃。数值可带 SI 后缀：500m、20u、50M。单位 V/A 决定波形数据的量纲。</p>
+    <datalist id="bw-list">
+      <option value="20M"><option value="50M"><option value="100M"><option value="200M"><option value="FULL">
+    </datalist>
+  </section>
+
+  <section class="screen">
+    <h2>仪器屏幕</h2>
+    <div class="frame"><img id="shot" alt="示波器屏幕截图，点击“截图”获取"><span id="shot-empty">尚未截图</span></div>
+    <div class="row">
+      <button id="btn-shot">截图</button>
+      <button id="btn-shot-save">存到共享盘</button>
+      <span id="shot-info" class="muted"></span>
+    </div>
+  </section>
+
+  <section class="timebase">
+    <h2>时基</h2>
+    <div class="fields">
+      <label>每格 <input data-cmd="tb" data-flag="scale" size="7"><span class="u">s/div</span></label>
+      <label>水平位置 <input data-cmd="tb" data-flag="position" size="7"><span class="u">s</span></label>
+      <label>参考点 <input data-cmd="tb" data-flag="reference" size="4"><span class="u">%</span></label>
+      <label>滚动 <select data-cmd="tb" data-flag="roll"><option>AUTO</option><option>OFF</option></select></label>
+      <div class="ro">总时长 <b id="tb-range">—</b></div>
+      <div class="ro">格数 <b id="tb-div">—</b></div>
+    </div>
+  </section>
+
+  <section class="acq">
+    <h2>采集</h2>
+    <div class="fields">
+      <label>类型 <select data-cmd="acq" data-flag="type">
+        <option value="SAMPle">采样</option><option value="AVERage">平均</option>
+        <option value="ENVelope">包络</option><option value="PDETect">峰值检测</option></select></label>
+      <label>平均次数 <input data-cmd="acq" data-flag="count" size="5"></label>
+      <label>采样率模式 <select data-cmd="acq" data-flag="srate-mode"><option value="AUTO">自动</option><option value="MANual">手动</option></select></label>
+      <label>采样率 <input data-cmd="acq" data-flag="srate" size="7"><span class="u">Sa/s</span></label>
+      <label>记录长度模式 <select data-cmd="acq" data-flag="points-mode"><option value="AUTO">自动</option><option value="MANual">手动</option></select></label>
+      <label>记录长度 <input data-cmd="acq" data-flag="points" size="9"><span class="u">pts</span></label>
+      <label>插值 <select data-cmd="acq" data-flag="interp"><option value="LINear">线性</option><option value="SINX">sin(x)/x</option><option value="SMHD">采样保持</option></select></label>
+      <div class="ro">分辨率 <b id="acq-res">—</b></div>
+      <div class="ro">最大点数 <b id="acq-max">—</b></div>
+    </div>
+    <p class="note">写入记录长度会把模式切到手动；台架采集前请恢复自动，否则记录被截短。</p>
+  </section>
+
+  <section class="trig">
+    <h2>触发</h2>
+    <div class="fields">
+      <label>模式 <select data-cmd="trig" data-flag="mode"><option value="AUTO">自动</option><option value="NORMal">正常</option><option value="FREerun">自由运行</option></select></label>
+      <label>源 <select data-cmd="trig" data-flag="source" id="trig-source">
+        <option>C1</option><option>C2</option><option>C3</option><option>C4</option>
+        <option>C5</option><option>C6</option><option>C7</option><option>C8</option>
+        <option>EXT</option><option>LINE</option></select></label>
+      <label>类型 <select data-cmd="trig" data-flag="type">
+        <option value="EDGE">边沿</option><option value="WIDTh">脉宽</option><option value="RUNT">欠幅</option>
+        <option value="WINDow">窗口</option><option value="TIMeout">超时</option><option value="INTerval">间隔</option>
+        <option value="SLEWrate">压摆率</option><option value="SETHold">建立保持</option><option value="STATe">状态</option><option value="PATTern">码型</option></select></label>
+      <label>边沿 <select data-cmd="trig" data-flag="slope"><option value="POSitive">上升</option><option value="NEGative">下降</option><option value="EITHer">任意</option></select></label>
+      <label>电平 <input data-cmd="trig" data-flag="level" size="7" id="trig-level"><span class="u" id="trig-level-unit"></span></label>
+      <label>释抑 <select data-cmd="trig" data-flag="holdoff-mode"><option value="OFF">关</option><option value="TIME">时间</option><option value="EVENts">事件</option><option value="RANDom">随机</option><option value="AUTO">自动</option></select></label>
+      <div class="row">
+        <button data-trig-act="find-level">找电平</button>
+        <button data-trig-act="force">强制触发一次</button>
+      </div>
+      <div class="ro">触发耦合 <b id="trig-coup">—</b></div>
+    </div>
+  </section>
+
+  <section class="meas">
+    <h2>测量读数</h2>
+    <table id="meas-table"><tbody id="meas-body"><tr><td class="muted">—</td></tr></tbody></table>
+    <div class="row"><button id="btn-meas">刷新读数</button></div>
+  </section>
+
+  <section class="log">
+    <h2>操作记录</h2>
+    <div class="scpi">
+      <input id="scpi-cmd" placeholder="原始 SCPI，例如 CHAN2:SCAL?  或  CHAN2:SCAL 0.5" spellcheck="false">
+      <label><input type="checkbox" id="scpi-write"> 允许写命令</label>
+      <button id="btn-scpi">发送</button>
+    </div>
+    <ol id="log"></ol>
+  </section>
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>

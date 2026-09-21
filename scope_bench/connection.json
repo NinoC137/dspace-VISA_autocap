@@ -1,0 +1,12 @@
+{
+  "transport": "raspi_ssh",
+  "export_timeout_s": 600,
+  "remote": {
+    "ssh_executable": "C:\\Program Files\\Git\\usr\\bin\\ssh.exe",
+    "host": "root@172.16.102.132",
+    "python": "/usr/bin/python3",
+    "agent": "/root/mxo_bench/pi_agent.py",
+    "share_root": "/mnt/scope_results",
+    "local_share_root": "F:\\ZYS_HYBASE\\automation\\scope_results"
+  }
+}

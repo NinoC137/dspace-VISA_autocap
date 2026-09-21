@@ -1,0 +1,646 @@
+﻿Project_PACC
+Experiment_PACC
+MDM
+
+
+   TypeName: System.__ComObject#{ddc06c3b-facf-46fe-a320-e87cfabedadb}
+
+Name                     MemberType Definition                                                    
+----                     ---------- ----------                                                    
+Start                    Method     void Start ()                                                 
+Stop                     Method     void Stop ()                                                  
+BookmarkTypes            Property   IXaBookmarkTypes BookmarkTypes () {get}                       
+CurrentMeasurement       Property   IXaCurrentMeasurement CurrentMeasurement () {get}             
+Files                    Property   IXaFiles Files () {get}                                       
+IsMeasuring              Property   bool IsMeasuring () {get}                                     
+MainRecorder             Property   IXaMainRecorder MainRecorder () {get}                         
+MDFVariableNameStorage   Property   MDFVariableNameStorage MDFVariableNameStorage () {get} {set}  
+MeasurementConfiguration Property   IXaMeasurementConfiguration MeasurementConfiguration () {get} 
+Measurements             Property   IXaMeasurements Measurements () {get}                         
+Recorders                Property   IXaRecorders Recorders () {get}                               
+TriggerRules             Property   IXaTriggerRules TriggerRules () {get}                         
+
+
+
+RECORDER
+
+
+   TypeName: System.__ComObject#{da2fe8d8-3a60-4bc3-af0e-e479fabf4411}
+
+Name                                MemberType Definition                                              
+----                                ---------- ----------                                              
+CreateClientID                      Method     int CreateClientID ()                                   
+Export                              Method     void Export (string, bool)                              
+ImportSignals                       Method     void ImportSignals (string)                             
+InvokeTrigger                       Method     void InvokeTrigger ()                                   
+ReleaseClientID                     Method     void ReleaseClientID (int)                              
+Remove                              Method     void Remove ()                                          
+Start                               Method     void Start (bool, bool)                                 
+Stop                                Method     void Stop ()                                            
+Active                              Property   bool Active () {get} {set}                              
+AddToExperimentEnabled              Property   bool AddToExperimentEnabled () {get} {set}              
+AutomaticExportRecordingEnabled     Property   bool AutomaticExportRecordingEnabled () {get} {set}     
+AutomaticNamingEnabled              Property   bool AutomaticNamingEnabled () {get} {set}              
+AutomaticNamingMinimumDigits        Property   int AutomaticNamingMinimumDigits () {get} {set}         
+AutomaticNamingStartIndex           Property   int AutomaticNamingStartIndex () {get} {set}            
+AutomaticSaveDialogEnabled          Property   bool AutomaticSaveDialogEnabled () {get} {set}          
+AutomaticSignalConfigurationEnabled Property   bool AutomaticSignalConfigurationEnabled () {get} {set} 
+BaseFileName                        Property   string BaseFileName () {get} {set}                      
+Buffers                             Property   IXaDataEventBuffers Buffers () {get}                    
+Description                         Property   string Description () {get} {set}                       
+ElapsedTime                         Property   double ElapsedTime () {get}                             
+ExportFullPath                      Property   string ExportFullPath () {get} {set}                    
+LastExportedFiles                   Property   SAFEARRAY(string) LastExportedFiles () {get}            
+LastRecordedFiles                   Property   SAFEARRAY(string) LastRecordedFiles () {get}            
+MeasurementTimestampsEnabled        Property   bool MeasurementTimestampsEnabled () {get} {set}        
+Name                                Property   string Name () {get} {set}                              
+OpenInMeasurementDataPoolEnabled    Property   bool OpenInMeasurementDataPoolEnabled () {get} {set}    
+Signals                             Property   IXaRecordingSignals Signals () {get}                    
+StartAudioSignalEnabled             Property   bool StartAudioSignalEnabled () {get} {set}             
+StartCondition                      Property   IXaStartCondition StartCondition () {get}               
+State                               Property   RecordingState State () {get}                           
+StopAudioSignalEnabled              Property   bool StopAudioSignalEnabled () {get} {set}              
+StopCondition                       Property   IXaStopCondition StopCondition () {get}                 
+WriteToFileEnabled                  Property   bool WriteToFileEnabled () {get} {set}                  
+
+
+
+CONFIGURATION
+
+
+   TypeName: System.__ComObject#{a6184268-efc4-43f5-ab48-065ff8f4f493}
+
+Name                                     MemberType Definition                                                                                    
+----                                     ---------- ----------                                                                                    
+AddAllVisualizedMeasurementsEnabled      Property   bool AddAllVisualizedMeasurementsEnabled () {get} {set}                                       
+AskBeforeRestartMeasuringEnabled         Property   bool AskBeforeRestartMeasuringEnabled () {get} {set}                                          
+AutoRestartMeasuringEnabled              Property   bool AutoRestartMeasuringEnabled () {get} {set}                                               
+Buffer                                   Property   IXaMeasurementBuffer Buffer () {get}                                                          
+DefaultAutoRepeatBehavior                Property   AutoRepeatBehaviorType DefaultAutoRepeatBehavior () {get} {set}                               
+DurationTriggers                         Property   IXaMeasurementDurationTriggers DurationTriggers () {get}                                      
+MaximumNumberOfDisplayedRasters          Property   int MaximumNumberOfDisplayedRasters () {get} {set}                                            
+MeasureContinuouslyDefaultEnabled        Property   bool MeasureContinuouslyDefaultEnabled () {get} {set}                                         
+Platforms                                Property   IXaMeasurementPlatforms Platforms () {get}                                                    
+SampleCountTriggers                      Property   IXaMeasurementSampleCountTriggers SampleCountTriggers () {get}                                
+SaveDisplayedDataStorageInformation      Property   IXaSaveDisplayedDataStorageInformation SaveDisplayedDataStorageInformation () {get}           
+SaveFlightRecorderDataStorageInformation Property   IXaSaveFlightRecorderDataStorageInformation SaveFlightRecorderDataStorageInformation () {get} 
+SaveMeasurementBufferStorageInformation  Property   IXaSaveMeasurementBufferStorageInformation SaveMeasurementBufferStorageInformation () {get}   
+Signals                                  Property   IXaMeasurementSignals Signals () {get}                                                        
+
+
+
+BUFFER
+
+
+   TypeName: System.__ComObject#{6e21771b-04af-43e4-9fe9-45069bd376cd}
+
+Name           MemberType Definition                         
+----           ---------- ----------                         
+Size           Property   double Size () {get} {set}         
+WarningEnabled Property   bool WarningEnabled () {get} {set} 
+WarningTime    Property   double WarningTime () {get} {set}  
+
+
+
+STOP CONDITION
+
+
+   TypeName: System.__ComObject#{4294ee57-56d6-4b91-bbdd-6732d2f49886}
+
+Name         MemberType Definition                                  
+----         ---------- ----------                                  
+Enabled      Property   bool Enabled () {get} {set}                 
+TimeLimit    Property   double TimeLimit () {get} {set}             
+Trigger      Property   IXaTriggerRule Trigger () {get} {set by ref}
+TriggerDelay Property   double TriggerDelay () {get} {set}          
+Type         Property   StopConditionType Type () {get} {set}       
+
+
+
+PLOTTER: Layout1/Time Plotter_25
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_26
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_31
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_32
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_34
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_35
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_36
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_37
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_38
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_56
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_57
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_59
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_34_1
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_31_46
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_36_48
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_57_50
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_58
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_78
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+PLOTTER: Layout1/Time Plotter_83
+PLOT
+
+
+   TypeName: System.__ComObject#{fd245d67-68b3-4e2a-a9b0-5431beb5d0ae}
+
+Name            MemberType Definition                                  
+----            ---------- ----------                                  
+Activate        Method     void Activate ()                            
+ActiveSignal    Property   IViPlotter2Signal ActiveSignal () {get}     
+ActiveXAxis     Property   IViPlotter2XAxis ActiveXAxis () {get}       
+ActiveYAxis     Property   IViPlotter2YAxis ActiveYAxis () {get}       
+Cursor          Property   IViPlotter2Cursor Cursor () {get}           
+DAQ             Property   IViPlotter2DAQ DAQ () {get}                 
+Grid            Property   IViPlotter2Grid Grid () {get}               
+IsActive        Property   bool IsActive () {get}                      
+Name            Property   string Name () {get} {set}                  
+OverlayElements Property   IViOverlayElements OverlayElements () {get} 
+Scrollbar       Property   IViPlotter2Scrollbar Scrollbar () {get}     
+TimeCursor      Property   IViPlotter2TimeCursor TimeCursor () {get}   
+View            Property   IViPlotter2View View () {get}               
+XAxes           Property   IViPlotter2XAxes XAxes () {get}             
+YAxes           Property   IViPlotter2YAxes YAxes () {get}             
+
+
+
+MEASUREMENT SIGNALS
+
+
+   TypeName: System.__ComObject#{24e47d5d-fb8a-436e-9b0f-4ceda87397c6}
+
+Name           MemberType Definition                           
+----           ---------- ----------                           
+Add            Method     IXaMeasurementSignal Add (Variant)   
+AddMultiple    Method     int AddMultiple (Variant, bool)      
+CheckBandwidth Method     BandwidthCheckState CheckBandwidth ()
+Contains       Method     bool Contains (Variant)              
+GetEnumerator  Method     IEnumVARIANT GetEnumerator ()        
+Item           Method     IXaMeasurementSignal Item (Variant)  
+RemoveAll      Method     void RemoveAll ()                    
+Count          Property   int Count () {get}                   
+
+
+
+
+
+Active           : True
+BandwidthState   : 0
+Definition       : Platform(HostService)://Model Root/VL/In1
+Identifier       : System.__ComObject
+IsConnected      : True
+PlatformName     : Platform
+RasterName       : HostService
+RecordingEnabled : True
+VariableName     : Model Root/VL/In1
+
+
+
+

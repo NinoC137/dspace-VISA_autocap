@@ -1,0 +1,50 @@
+# Line endings for controldesk_automation
+#
+# This project is authored on macOS and deployed to Windows
+# (F:\ZYS_HYBASE\automation). Deployment verification compares SHA-256 per file
+# (see docs/DIRECTORY_LAYOUT.md), so line endings are part of the verified
+# payload: a checkout that silently rewrites them would invalidate every hash
+# without changing behaviour. Hence the rules below pin the *existing* state
+# rather than imposing a new one.
+#
+# Default: LF everywhere.
+* text=auto eol=lf
+
+# Exception: these were produced by PowerShell on work-pc (`Out-File` emits
+# CRLF). They are captured reference output, not authored source, so they keep
+# their native CRLF. Rewriting them to LF would change 5 deployed files for no
+# benefit.
+/docs/reference/** text eol=crlf
+
+# Exception: the live rig configuration. It was historically maintained on
+# Windows and was mixed (109 CRLF + 10 stray LF); it is now uniformly CRLF.
+# Kept as CRLF to preserve its long-standing on-disk form.
+/scope_bench/bench_config.json text eol=crlf
+
+
+# ---------------------------------------------------------------------------
+# Binaries: never convert, never diff.
+# ---------------------------------------------------------------------------
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.tar binary
+
+# Measurement data and MATLAB artefacts (not currently tracked, listed so they
+# stay safe if they are ever committed by accident).
+*.mf4 binary
+*.mat binary
+*.slx binary
+*.fig binary
+
+# Compiled / native artefacts (ignored by .gitignore, belt-and-braces here).
+*.pyc binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.a binary

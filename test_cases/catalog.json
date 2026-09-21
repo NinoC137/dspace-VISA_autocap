@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "tests": [
+    {
+      "id": "phase_angle_validation_01",
+      "name": "七角度相移验证（含120度复测）",
+      "enabled": true,
+      "manual_setup": "VL_120",
+      "low_voltage_v": 120,
+      "expected_cases": 8,
+      "cases": "test_cases/phase_angle_validation_01/cases.csv",
+      "groups": "config/waveform_groups.json",
+      "observations": "test_cases/phase_angle_validation_01/observation_signals.json",
+      "scope_config": "test_cases/phase_angle_validation_01/bench_config.json"
+    },
+    {
+      "id": "legacy_vl120",
+      "name": "既有 VL=120 V 工况组",
+      "enabled": true,
+      "manual_setup": "VL_120",
+      "low_voltage_v": 120,
+      "expected_cases": 8,
+      "cases": "config/sweep_cases.csv",
+      "groups": "config/waveform_groups.json",
+      "observations": "",
+      "scope_config": "scope_bench/bench_config.json"
+    },
+    {
+      "id": "legacy_vl100",
+      "name": "既有 VL=100 V 工况组",
+      "enabled": true,
+      "manual_setup": "VL_100",
+      "low_voltage_v": 100,
+      "expected_cases": 1,
+      "cases": "config/sweep_cases.csv",
+      "groups": "config/waveform_groups.json",
+      "observations": "",
+      "scope_config": "scope_bench/bench_config.json"
+    },
+    {
+      "id": "legacy_vl140",
+      "name": "既有 VL=140 V 工况组",
+      "enabled": true,
+      "manual_setup": "VL_140",
+      "low_voltage_v": 140,
+      "expected_cases": 4,
+      "cases": "config/sweep_cases.csv",
+      "groups": "config/waveform_groups.json",
+      "observations": "",
+      "scope_config": "scope_bench/bench_config.json"
+    },
+    {
+      "id": "legacy_vl160",
+      "name": "既有 VL=160 V 工况组",
+      "enabled": true,
+      "manual_setup": "VL_160",
+      "low_voltage_v": 160,
+      "expected_cases": 2,
+      "cases": "config/sweep_cases.csv",
+      "groups": "config/waveform_groups.json",
+      "observations": "",
+      "scope_config": "scope_bench/bench_config.json"
+    }
+  ]
+}

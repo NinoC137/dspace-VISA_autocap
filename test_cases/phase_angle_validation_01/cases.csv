@@ -1,0 +1,9 @@
+case_id,enabled,VL_V,xi,ud_ref6,ud_ref7,phi_deg,note
+P090,true,120,0.50,60,60,90,ascending_sweep
+P105,true,120,0.50,60,60,105,ascending_sweep
+P120,true,120,0.50,60,60,120,ascending_sweep
+P135,true,120,0.50,60,60,135,ascending_sweep
+P150,true,120,0.50,60,60,150,ascending_sweep
+P165,true,120,0.50,60,60,165,ascending_sweep
+P180,true,120,0.50,60,60,180,ascending_sweep
+P120R,true,120,0.50,60,60,120,thermal_drift_repeat
