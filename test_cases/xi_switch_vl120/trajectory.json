@@ -1,0 +1,18 @@
+{
+  "xi_sequence": [
+    0.4,
+    0.515,
+    0.8
+  ],
+  "switch_times_s": [
+    3.5,
+    6.5
+  ],
+  "initial_prediction_at_s": 1.3,
+  "prediction_settle_s": 0.8,
+  "angle_policy": {
+    "fixed90": "90 degrees throughout",
+    "fixed180": "180 degrees throughout",
+    "adaptive": "online phiOptDeg after settling, rounded to degree; fail closed on invalid prediction"
+  }
+}

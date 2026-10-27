@@ -74,6 +74,14 @@ function New-ScopeBridge([string]$Python, [string]$Script, [string]$ConfigPath, 
         }
         $this.Begun = $false
     }
+    $bridge | Add-Member ScriptMethod UpdateContext {
+        param($Context)
+        if (-not $this.Directory) { throw 'Scope capture directory is not prepared.' }
+        # The worker waits for export.json, so write the completed control-event
+        # history before releasing it to export and native screenshot handling.
+        $Context | ConvertTo-Json -Depth 12 |
+            Set-Content (Join-Path $this.Directory 'context.json') -Encoding UTF8
+    }
     $bridge | Add-Member ScriptMethod Tick {
         param([double]$Elapsed)
         $state = $this.Poll()
@@ -83,6 +91,11 @@ function New-ScopeBridge([string]$Python, [string]$Script, [string]$ConfigPath, 
         }
         $deadline = $this.Config.timing.settle_s + $this.Config.instrument.acquisition_timeout_s
         if ($Elapsed -gt $deadline -and $state -ne 'frozen') { throw 'Scope acquisition deadline missed.' }
+    }
+    $bridge | Add-Member ScriptMethod AssertAcquiring {
+        if (-not $this.Begun -or $this.Poll() -ne 'acquiring') {
+            throw 'Xi switch requested before scope acquisition started or after it froze.'
+        }
     }
     $bridge | Add-Member ScriptMethod AssertFrozen {
         if (-not $this.Begun -or $this.Poll() -ne 'frozen') { throw 'No frozen waveform before disable.' }

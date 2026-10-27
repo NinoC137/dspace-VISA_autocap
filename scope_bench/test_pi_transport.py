@@ -25,6 +25,14 @@ class TransportTests(unittest.TestCase):
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.cfg = load_config(HERE/"bench_config.json")
+        # These tests drive the Raspberry-Pi transport with a fake peer, so pin the
+        # instrument section rather than depending on which scope is currently
+        # deployed by switch-scope.cmd.
+        self.cfg["instrument"].update({
+            "resource": "USB0::0x0AAD::0x0197::1335.2050k08-101400::INSTR",
+            "expected_model": "MXO38",
+            "expected_serial": "1335.2050k08/101400",
+            "transport": "raspi_ssh"})
         self.cfg["instrument"]["remote"]["local_share_root"] = str(self.root)
         self.cfg["instrument"]["remote"]["host"] = "fixture@localhost"
         self.cfg["instrument"]["query_attempts"] = 1

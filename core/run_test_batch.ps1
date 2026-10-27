@@ -47,6 +47,12 @@ $setups = @($selected | Select-Object -ExpandProperty manual_setup -Unique)
 if ($Mode -eq 'Run' -and $setups.Count -ne 1) {
     throw ('One automatic batch cannot cross manual supply setups: ' + ($setups -join ', '))
 }
+$customTests = @($selected | Where-Object {
+    $_.PSObject.Properties['runner'] -and [string]$_.runner
+})
+if ($customTests.Count -gt 0 -and $selected.Count -ne 1) {
+    throw 'A dedicated xi test must be selected alone.'
+}
 
 function Resolve-ProjectPath([string]$Value, [bool]$Required = $true) {
     if (-not $Value) {
@@ -72,10 +78,13 @@ if ($Mode -eq 'Run') {
 
 try {
     foreach ($test in $selected) {
+        $hasCustomRunner = $test.PSObject.Properties['runner'] -and [string]$test.runner
         $cases = Resolve-ProjectPath ([string]$test.cases)
         $groups = Resolve-ProjectPath ([string]$test.groups)
         $observations = Resolve-ProjectPath ([string]$test.observations) $false
-        $scopeConfig = if ($SessionScopeConfig) { Resolve-ProjectPath $SessionScopeConfig } `
+        $scopeConfig = if ($hasCustomRunner -and $test.fixed_scope_config) {
+            Resolve-ProjectPath ([string]$test.scope_config)
+        } elseif ($SessionScopeConfig) { Resolve-ProjectPath $SessionScopeConfig } `
             else { Resolve-ProjectPath ([string]$test.scope_config) }
         $caseCount = @(Import-Csv -LiteralPath $cases | Where-Object {
             $_.enabled -eq 'true' -and [double]$_.VL_V -eq [double]$test.low_voltage_v
@@ -96,7 +105,9 @@ try {
             [void](New-Item -ItemType Directory -Path $testDirectory)
             $args.OutputDirectory = $testDirectory
         }
-        & (Join-Path $PSScriptRoot 'run_parameter_sweep.ps1') @args
+        $runner = if ($hasCustomRunner) { Resolve-ProjectPath ([string]$test.runner) } `
+            else { Join-Path $PSScriptRoot 'run_parameter_sweep.ps1' }
+        & $runner @args
         $status.Tests += [ordered]@{Id=[string]$test.id; FinishedAt=(Get-Date).ToString('o'); Status='complete'}
         if ($StopFile -and (Test-Path -LiteralPath ($StopFile + '.used'))) {
             $status.Tests[-1].Status = 'stopped'
@@ -109,8 +120,31 @@ try {
     $status.Error = $_.Exception.Message
     throw
 } finally {
-    $status.FinishedAt = (Get-Date).ToString('o')
     if ($batchDirectory) {
+        # The rig is already disabled and every scope export has completed here.
+        # Plotting is a separate result: a rendering failure must not erase a
+        # successfully acquired batch or claim the hardware run failed.
+        if ($status.Complete -and $customTests.Count -eq 0) {
+            $plotScript = Join-Path $ProjectRoot 'scope_bench\plot_hvdc_detail.py'
+            $plotPython = if ($PythonExecutable) { $PythonExecutable } `
+                else { Join-Path $ProjectRoot 'scope_bench\.venv\Scripts\python.exe' }
+            try {
+                if (-not (Test-Path -LiteralPath $plotPython)) { throw ('Python missing: ' + $plotPython) }
+                if (-not (Test-Path -LiteralPath $plotScript)) { throw ('Plot script missing: ' + $plotScript) }
+                & $plotPython $plotScript $batchDirectory
+                if ($LASTEXITCODE -ne 0) { throw ('Plot script returned ' + $LASTEXITCODE) }
+                $detailIndex = Join-Path $batchDirectory 'hvdc_detail\index.json'
+                $status.HVDCDetail = if (Test-Path -LiteralPath $detailIndex) { 'complete' } `
+                    else { 'not_applicable' }
+            } catch {
+                $status.HVDCDetail = 'failed: ' + $_.Exception.Message
+                Write-Warning ('HVDC detail plot: ' + $_.Exception.Message)
+            }
+        }
+        if ($status.Complete -and $customTests.Count -gt 0) {
+            $status.HVDCDetail = 'dedicated_xi_analysis_in_test_result'
+        }
+        $status.FinishedAt = (Get-Date).ToString('o')
         $status | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $batchDirectory 'batch_status.json') -Encoding UTF8
     }
 }

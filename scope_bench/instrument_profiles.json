@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "active": "mso58b",
+  "notes": [
+    "示波器档案表。switch_scope.py 只把 profile 里的 instrument 段补丁写进 bench_config.json，",
+    "其余（timing / acquisition / channels / analysis / screenshots）一律不动，所以切换不会丢实验设置。",
+    "mxo38: transport=raspi_ssh，走树莓派 USB + R&S VISA。",
+    "mso58b: transport=tek_socket，PC 直连仪器 socket server(4000)，纯 stdlib，不经树莓派。",
+    "        只有截图那一步需要 VXI-11，委派给树莓派 scope-shot。",
+    "pi_name 对应树莓派 /etc/scope/instruments.json 里的名字。"
+  ],
+  "profiles": {
+    "mxo38": {
+      "label": "Rohde & Schwarz MXO38 (USB, 经树莓派)",
+      "pi_name": "mxo38",
+      "aliases": [
+        "rns",
+        "rs",
+        "mxo",
+        "rohde",
+        "usb"
+      ],
+      "status": "ready",
+      "instrument": {
+        "resource": "USB0::0x0AAD::0x0197::1335.2050k08-101400::INSTR",
+        "expected_model": "MXO38",
+        "expected_serial": "1335.2050k08/101400",
+        "transport": "raspi_ssh",
+        "remote": {
+          "ssh_executable": "C:\\Program Files\\Git\\usr\\bin\\ssh.exe",
+          "host": "root@172.16.102.132",
+          "python": "/usr/bin/python3",
+          "agent": "/root/mxo_bench/pi_agent.py",
+          "share_root": "/mnt/scope_results",
+          "local_share_root": "F:\\ZYS_HYBASE\\automation\\scope_results"
+        }
+      }
+    },
+    "mso58b": {
+      "label": "Tektronix MSO58B (LAN socket, PC 直连)",
+      "pi_name": "mso58b",
+      "aliases": [
+        "tek",
+        "tektronix",
+        "mso5",
+        "58b",
+        "lan"
+      ],
+      "status": "ready",
+      "instrument": {
+        "resource": "TCPIP::192.168.2.200::4000::SOCKET",
+        "expected_model": "MSO58B",
+        "expected_serial": "C070122",
+        "transport": "tek_socket",
+        "remote": {
+          "ssh_executable": "C:\\Program Files\\Git\\usr\\bin\\ssh.exe",
+          "host": "root@172.16.102.132",
+          "python": "/usr/bin/python3",
+          "agent": "/root/mxo_bench/pi_agent.py",
+          "share_root": "/mnt/scope_results",
+          "local_share_root": "F:\\ZYS_HYBASE\\automation\\scope_results"
+        }
+      }
+    }
+  }
+}

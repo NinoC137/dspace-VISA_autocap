@@ -97,11 +97,16 @@ def validate(config):
                          "settle_after_clear_s": 0.6, "query_attempts": 2,
                          "recover_attempts": 2}.items():
         ins.setdefault(key, default)
-    if ins.get("transport", "local_visa") not in ("local_visa", "raspi_ssh"):
-        raise ValueError("instrument.transport must be local_visa or raspi_ssh")
+    if ins.get("transport", "local_visa") not in ("local_visa", "raspi_ssh", "tek_socket"):
+        raise ValueError("instrument.transport must be local_visa, raspi_ssh or tek_socket")
     if ins.get("transport") == "raspi_ssh":
         from pi_transport import validate_remote
         validate_remote(ins["remote"])
+    if ins.get("transport") == "tek_socket":
+        # Tektronix LAN backend: the PC talks straight to the instrument's socket
+        # server, so the only thing to validate is that resource string.
+        from tek import parse_socket_resource
+        parse_socket_resource(ins.get("resource", ""))
     for obj, keys in ((t, list(t)), (ins, ["query_timeout_ms", "acquisition_timeout_s", "export_timeout_s"]),
                       (a, ["fsw_hz", "f0_hz", "welch_segment_s", "dc_span_abs", "dc_span_relative", "ac_span_relative"])):
         if any(not math.isfinite(float(obj[k])) or float(obj[k]) <= 0 for k in keys):

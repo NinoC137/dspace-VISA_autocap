@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "instrument": {
+    "resource": "TCPIP::192.168.2.200::4000::SOCKET",
+    "expected_model": "MSO58B",
+    "expected_serial": "C070122",
+    "query_timeout_ms": 5000,
+    "acquisition_timeout_s": 2.5,
+    "export_timeout_s": 600,
+    "binary_expect_termination": true,
+    "transport": "tek_socket",
+    "remote": {
+      "ssh_executable": "C:\\Program Files\\Git\\usr\\bin\\ssh.exe",
+      "host": "root@172.16.102.132",
+      "python": "/usr/bin/python3",
+      "agent": "/root/mxo_bench/pi_agent.py",
+      "share_root": "/mnt/scope_results",
+      "local_share_root": "F:\\ZYS_HYBASE\\automation\\scope_results"
+    },
+    "min_throughput_bytes_per_s": 200000,
+    "settle_after_clear_s": 0.6,
+    "query_attempts": 2,
+    "recover_attempts": 2
+  },
+  "timing": {
+    "enable_duration_s": 12.0,
+    "settle_s": 6,
+    "record_duration_s": 0.5,
+    "minimum_off_s": 1
+  },
+  "acquisition": {
+    "sample_rate_hz": null,
+    "max_samples_per_channel": 100000000,
+    "max_raw_bytes": 4294967296,
+    "anti_alias_verified": false,
+    "probe_bandwidth_verified": false
+  },
+  "channels": {
+    "CH1": {
+      "enabled": true,
+      "signal": "HV source current between supply and HV bus capacitor",
+      "unit": "A",
+      "zero_offset": 0.0,
+      "zero_calibrated": false,
+      "probe_range_A": 30.0
+    },
+    "CH2": {
+      "enabled": false,
+      "signal": "CH2",
+      "unit": null,
+      "zero_offset": 0.0
+    },
+    "CH3": {
+      "enabled": false,
+      "signal": "CH3",
+      "unit": null,
+      "zero_offset": 0.0
+    },
+    "CH4": {
+      "enabled": false,
+      "signal": "CH4",
+      "unit": null,
+      "zero_offset": 0.0
+    },
+    "CH5": {
+      "enabled": false,
+      "signal": "CH5",
+      "unit": null,
+      "zero_offset": 0.0
+    },
+    "CH6": {
+      "enabled": false,
+      "signal": "CH6",
+      "unit": null,
+      "zero_offset": 0.0
+    },
+    "CH7": {
+      "enabled": false,
+      "signal": "CH7",
+      "unit": null,
+      "zero_offset": 0.0
+    },
+    "CH8": {
+      "enabled": false,
+      "signal": "CH8",
+      "unit": null,
+      "zero_offset": 0.0
+    }
+  },
+  "analysis": {
+    "channel": "CH1",
+    "fsw_hz": 10000.0,
+    "f0_hz": 50.0,
+    "q_max": 5,
+    "welch_segment_s": 0.1,
+    "overlap": 0.5,
+    "dc_span_abs": 0.02,
+    "dc_span_relative": 0.02,
+    "ac_span_relative": 0.05,
+    "make_plots": true
+  },
+  "screenshots": {
+    "enabled": true,
+    "spans_s": [
+      0.2,
+      0.05,
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "center_fraction": 0.5,
+    "settle_s": 0.5,
+    "timeout_s": 30
+  }
+}

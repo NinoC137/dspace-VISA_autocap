@@ -1,20 +1,20 @@
-# Directory layout and sync boundary
+# 目录布局
 
-The production root is `F:\ZYS_HYBASE\automation`; the Mac mirror is
-`02-Engineering/controldesk_automation`.
+仓库只保存可复用源码、配置模板、测试定义和说明。部署根目录由使用者自行选择，文档不写入主机盘符或共享路径。
 
-Source directories are `core`, `config`, `test_cases`, `scope_bench`, `launchers`, `matlab`,
-`tools`, `tests`, and `docs`. The root contains only the README and the two normal operator entry
-commands.
+```text
+.
+├── core/                 # 批测调度、状态机和清理
+├── config/               # 共享配置与信号组
+├── scope_bench/          # 示波器后端、传输、分析与界面
+├── test_cases/           # catalog 与实验 case
+├── launchers/            # 新旧入口
+├── matlab/               # MATLAB / dSPACE 辅助代码
+├── tools/                # 只读诊断与部署辅助脚本
+├── tests/                # 非硬件回归测试
+├── docs/                 # 使用说明与设计记录
+├── scope_results/        # 运行时结果，不应提交
+└── sweep_results/        # 批测结果，不应提交
+```
 
-Runtime and historical directories remain separate and are never moved or deleted by deployment:
-
-- `scope_results/`, `sweep_results/`: measurement output.
-- `backup_*/`: deployment rollback copies.
-- `*_validation_*/`, `pi_validation_*/`, `validation/`: validation artifacts.
-- `parameter_snapshots/`: ControlDesk inventories.
-- `scope_bench/sessions/`: GUI session state and stop markers.
-- `scope_bench/.venv/`, `__pycache__/`: machine-local generated dependencies.
-
-Deployment uses SHA-256 checks for source files. A directory migration is performed only while no
-sweep or scope worker is running, and a complete pre-migration backup is retained on work-pc.
+部署相关的路径、账号、地址、密钥和仪器身份信息应放在本地配置或受控的运维记录中。提交前执行 `git status` 和敏感信息扫描，确认没有把运行产物或部署信息加入 Git。

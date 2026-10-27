@@ -79,6 +79,14 @@ class DisplayVisa(FakeVisa):
 class ScreenshotTests(unittest.TestCase):
     def setUp(self):
         self.cfg = load_config(HERE/"bench_config.json")
+        # These tests drive the MXO backend with a fake VISA session, so pin the
+        # instrument identity here: the deployed bench_config.json is intentionally
+        # swappable (switch-scope.cmd), and may well point at another oscilloscope.
+        self.cfg["instrument"].update({
+            "resource": "USB0::0x0AAD::0x0197::1335.2050k08-101400::INSTR",
+            "expected_model": "MXO38",
+            "expected_serial": "1335.2050k08/101400",
+            "transport": "local_visa"})
         for name, item in self.cfg["channels"].items():
             item["enabled"] = name in ("CH1", "CH8")
         self.cfg["analysis"]["make_plots"] = False

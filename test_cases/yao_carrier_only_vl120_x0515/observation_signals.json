@@ -1,0 +1,98 @@
+[
+  {
+    "Name": "phaseCommandDeg",
+    "Path": "Model Root/phi2_deg/Value"
+  },
+  {
+    "Name": "xiReadback",
+    "Path": "Model Root/Constant3/Value"
+  },
+  {
+    "Name": "phiOptDeg",
+    "Path": "Model Root/MATLAB Function13/phiOptDeg"
+  },
+  {
+    "Name": "phiSearchDeg",
+    "Path": "Model Root/MATLAB Function13/phiSearchDeg"
+  },
+  {
+    "Name": "K1",
+    "Path": "Model Root/MATLAB Function13/K1"
+  },
+  {
+    "Name": "K2",
+    "Path": "Model Root/MATLAB Function13/K2"
+  },
+  {
+    "Name": "Gamma",
+    "Path": "Model Root/MATLAB Function13/Gamma"
+  },
+  {
+    "Name": "valid",
+    "Path": "Model Root/MATLAB Function13/valid"
+  },
+  {
+    "Name": "status",
+    "Path": "Model Root/MATLAB Function13/status"
+  },
+  {
+    "Name": "diag",
+    "Path": "Model Root/MATLAB Function13/diag"
+  },
+  {
+    "Name": "hvVoltage",
+    "Path": "Model Root/udc1/In1"
+  },
+  {
+    "Name": "lvVoltage",
+    "Path": "Model Root/udc2/In1"
+  },
+  {
+    "Name": "hvPower",
+    "Path": "Model Root/PHV/In1"
+  },
+  {
+    "Name": "lvPower",
+    "Path": "Model Root/PLV/In1"
+  },
+  {
+    "Name": "ac1ActivePower",
+    "Path": "Model Root/PQ1/In1"
+  },
+  {
+    "Name": "ac1ReactivePower",
+    "Path": "Model Root/PQ1/In2"
+  },
+  {
+    "Name": "ac2ActivePower",
+    "Path": "Model Root/PQ2/In1"
+  },
+  {
+    "Name": "ac2ReactivePower",
+    "Path": "Model Root/PQ2/In2"
+  },
+  {
+    "Name": "IP_avg",
+    "Path": "Model Root/MATLAB Function13/IP_avg"
+  },
+  {
+    "Name": "IO_avg",
+    "Path": "Model Root/MATLAB Function13/IO_avg"
+  },
+  {
+    "Name": "IH_avg_hat",
+    "Path": "Model Root/MATLAB Function13/IH_avg_hat"
+  },
+  {
+    "Name": "nodeMean",
+    "Path": "Model Root/MATLAB Function13/nodeMean"
+  },
+  {
+    "Name": "nodeCoeff",
+    "Path": "Model Root/MATLAB Function13/nodeCoeff"
+  },
+  {
+    "Name": "reconReady",
+    "Path": "Model Root/MATLAB Function13/reconReady"
+  }
+]

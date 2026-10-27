@@ -6,6 +6,7 @@ writes are allowed here. The original layout is restored even after a failed ima
 from datetime import datetime, timezone
 import html
 import io
+import json
 import math
 from pathlib import Path
 import time
@@ -201,7 +202,192 @@ def capture_screenshots(scope, directory, case, axis):
     return report
 
 
+def _tek_screenshot(scope, directory, case, raw):
+    """Save native Tek PNGs of the same frozen record, including event-centered zooms.
+
+    PC socket SCPI changes display zoom only. Pi VXI-11 `scope-shot` reads the
+    actual screen pixels, after each zoom has completed. No new acquisition is
+    started and no waveform samples are rendered into a synthetic image.
+    """
+    import glob
+    import os
+    import subprocess
+    import time as _time
+
+    cfg = scope.config["screenshots"]
+    if not cfg["enabled"]:
+        return {"status": "disabled", "backend": "tek", "images": []}
+    directory = Path(directory)
+    (directory/"screenshots").mkdir(exist_ok=True)
+    remote = (scope.config.get("instrument") or {}).get("remote") or {}
+    ssh = remote.get("ssh_executable", "ssh")
+    host = remote.get("host")
+    share = remote.get("share_root", "/mnt/scope_results")
+    local_root = remote.get("local_share_root")
+    report = {"status": "pending", "backend": "tek", "kind": "native_frozen_record_zoom",
+              "images": [], "restore_errors": [], "requested_spans_s": cfg["spans_s"]}
+    if not host or not local_root:
+        return dict(report, status="failed", error="instrument.remote.host / local_share_root missing")
+    case_values = case.get("Case", case)
+    policy = case_values.get("Note")
+    dynamic = policy in ("fixed90", "fixed180", "adaptive")
+    # Fixed-angle grid cases use the same frozen-record views as steady xi cases.
+    steady = policy in ("steady_best", "fixed_phase_5deg_grid")
+    if not dynamic and not steady:
+        return dict(report, status="failed", error="Unexpected xi screenshot policy: " + str(policy))
+
+    with h5py.File(raw, "r") as h:
+        ch1 = h["channels/CH1"]
+        t0 = float(ch1.attrs["t0_s"])
+        span = (int(ch1.attrs["N"])-1)*float(ch1.attrs["dt_s"])
+    if span <= 0:
+        return dict(report, status="failed", error="Invalid saved waveform span")
+    events = case.get("Events") or []
+    switches = [e for e in events if e.get("action") == "xi_switch"]
+    if len(switches) != (2 if dynamic else 0):
+        return dict(report, status="failed", error="Missing/extra xi switch events in capture context")
+    acquisition = [json.loads(line) for line in (directory/"events.jsonl").read_text(
+        encoding="utf-8").splitlines() if line.strip()]
+    acquisition = [e for e in acquisition if e.get("state") == "acquiring"]
+    if len(acquisition) != 1:
+        return dict(report, status="failed", error="Cannot identify acquisition start")
+    acquire_utc = datetime.fromisoformat(acquisition[0]["utc"].replace("Z", "+00:00"))
+    views = []
+    if dynamic:
+        requested = float(cfg["spans_s"][0])
+        if len(cfg["spans_s"]) != 1 or not .15 <= requested <= .30:
+            return dict(report, status="failed", error="Dynamic native zoom requires one 150-300 ms span")
+        previous_xi = float(case_values["Xi"])
+        for number, event in enumerate(switches, 1):
+            event_utc = datetime.fromisoformat(event["utc"].replace("Z", "+00:00"))
+            event_offset = (event_utc-acquire_utc).total_seconds()
+            if not requested/2 <= event_offset <= span-requested/2:
+                return dict(report, status="failed", error="Xi switch lies outside the saved zoomable record")
+            views.append(dict(name=f"xi_switch_{number:02d}_200ms.png", span_s=requested,
+                              position_percent=100*event_offset/span, event_offset_s=event_offset,
+                              xi_before=previous_xi, xi_after=float(event["xi"])))
+            previous_xi = float(event["xi"])
+    else:
+        for requested in cfg["spans_s"]:
+            requested = float(requested)
+            if not 0 < requested < span:
+                return dict(report, status="failed", error="Steady zoom span exceeds saved record")
+            views.append(dict(name=f"steady_{round(requested*1000):d}ms.png", span_s=requested,
+                              position_percent=100*float(cfg.get("center_fraction", .5))))
+
+    zoom = "DISplay:WAVEView1:ZOOM:ZOOM1"
+    keys = {"state": zoom+":STATe", "position": zoom+":HORizontal:POSition",
+            "winscale": zoom+":HORizontal:WINSCALe"}
+    saved = {}
+    touched = False
+    capture_stamp = scope.query("ACQuire:NUMACq?")
+    def assert_frozen(stage="native_screenshot"):
+        state = scope.query("ACQuire:STATE?").strip()
+        count = scope.query("ACQuire:NUMACq?").strip()
+        report.setdefault("freeze_checks", []).append(dict(
+            stage=stage, state=state, acquisitions=count, expected_acquisitions=capture_stamp))
+        if state != "0" or count != capture_stamp:
+            raise RuntimeError("Frozen acquisition changed during native screenshots: "
+                               f"stage={stage}, state={state}, acquisitions={count}, expected={capture_stamp}")
+
+    def save_screen(target, label):
+        prefix = ("bench_"+directory.name[-20:]+"_"+label).replace(":", "_")
+        started = _time.time()
+        command = "scope-shot --scope mso58b -o %s -f %s" % (share, prefix)
+        done = subprocess.run([ssh, "-T", "-o", "BatchMode=yes", "-o", "ConnectTimeout=8",
+                               host, command], capture_output=True, text=True, timeout=180)
+        if done.returncode:
+            raise RuntimeError((done.stdout+done.stderr).strip()[:300] or f"scope-shot rc={done.returncode}")
+        produced = sorted(glob.glob(os.path.join(local_root, prefix+"_*.png")), key=os.path.getmtime)
+        produced = [p for p in produced if os.path.getmtime(p) >= started-5]
+        if not produced:
+            raise RuntimeError("scope-shot returned no current PNG")
+        data = Path(produced[-1]).read_bytes()
+        image = checked_png(data)
+        target.parent.mkdir(exist_ok=True)
+        partial = target.with_suffix(".png.partial")
+        partial.write_bytes(data)
+        partial.replace(target)
+        return {"file": str(target.relative_to(directory)), "sha256": sha256(target),
+                "bytes": len(data), "width": image.width, "height": image.height}
+
+    # This unit requests only the native screen as it currently appears.
+    # Do not change zoom state, zoom scales, display position, or acquisition.
+    if cfg.get("view_mode") == "current":
+        report.update(kind="native_current_screen", requested_spans_s=[])
+        try:
+            assert_frozen("before_current_screen")
+            report["images"].append(dict(kind="current_screen", **save_screen(directory/"screen.png", "current")))
+            assert_frozen("after_current_screen")
+            report["status"] = "complete"
+        except Exception as exc:
+            report.update(status="failed", error=str(exc))
+        finally:
+            atomic_json(directory/"screenshots"/"index.json", report)
+        return report
+
+    try:
+        assert_frozen()
+        horizontal_position = float(scope.query("HORizontal:POSition?"))
+        if abs(horizontal_position) > 1.5:
+            raise RuntimeError("Tek trigger position changed from the 0% acquisition-start setting")
+        report["horizontal_trigger_position_percent"] = horizontal_position
+        for name, key in keys.items():
+            saved[name] = scope.query(key+"?").strip()
+        # Force an unzoomed first image even when the operator left zoom enabled.
+        touched = True
+        scope.write(keys["state"]+" OFF")
+        scope.query("*OPC?")
+        assert_frozen()
+        report["images"].append(dict(kind="overview", **save_screen(directory/"screen.png", "overview")))
+        scope.write(keys["state"]+" ON")
+        for number, view in enumerate(views, 1):
+            scope.write(keys["winscale"]+" %.12g" % (view["span_s"]/10))
+            scope.write(keys["position"]+" %.9g" % view["position_percent"])
+            if scope.query("*OPC?").strip() != "1":
+                raise RuntimeError("Tek display zoom did not complete")
+            actual_scale = float(scope.query(keys["winscale"]+"?"))
+            actual_position = float(scope.query(keys["position"]+"?"))
+            if not .75*view["span_s"] <= 10*actual_scale <= 1.3*view["span_s"] or \
+                    abs(actual_position-view["position_percent"]) > 1.5:
+                raise RuntimeError("Tek zoom readback does not cover requested event window")
+            scope.errors()
+            assert_frozen()
+            _time.sleep(float(cfg.get("settle_s", .5)))
+            entry = dict(kind="event_zoom" if dynamic else "steady_zoom", **view)
+            entry.update(save_screen(directory/"screenshots"/view["name"], f"zoom{number}"))
+            entry.update(actual_span_s=10*actual_scale, actual_position_percent=actual_position,
+                         acquisition_stamp=capture_stamp)
+            assert_frozen()
+            report["images"].append(entry)
+        report["status"] = "complete"
+    except Exception as exc:
+        report.update(status="failed", error=str(exc))
+    finally:
+        if touched:
+            for name in ("winscale", "position", "state"):
+                try:
+                    scope.write(keys[name]+" "+saved[name])
+                except Exception as exc:
+                    report["restore_errors"].append(f"{name}: {exc}")
+            try:
+                scope.query("*OPC?")
+                assert_frozen()
+                if int(float(scope.query(keys["state"]+"?"))) != int(float(saved["state"])) or \
+                        abs(float(scope.query(keys["position"]+"?"))-float(saved["position"])) > .01 or \
+                        abs(float(scope.query(keys["winscale"]+"?"))-float(saved["winscale"])) > 1e-9:
+                    raise RuntimeError("Tek display zoom restore readback mismatch")
+            except Exception as exc:
+                report["restore_errors"].append(str(exc))
+            if report["restore_errors"]:
+                report["status"] = "failed"
+        atomic_json(directory/"screenshots"/"index.json", report)
+    return report
+
+
 def export_screenshots(scope, directory, case, raw):
+    if getattr(scope, "backend", "") == "tek":
+        return _tek_screenshot(scope, directory, case, raw)
     with h5py.File(raw, "r") as h:
         first = h["channels/"+selected_channels(scope.config)[0]]
         axis = {key: first.attrs[key].item() for key in ("t0_s", "dt_s", "N")}

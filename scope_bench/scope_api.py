@@ -96,8 +96,8 @@ def config_with_overrides(config, args):
 
 def cmd_ping(args):
     config = load(args.config)
-    from mxo import Mxo
-    scope = Mxo(config)
+    from bench import make_scope
+    scope = make_scope(config)
     try:
         scope.errors()
         return emit(dict(ok=True, idn=scope.identity(), resource=config["instrument"]["resource"],
@@ -109,8 +109,8 @@ def cmd_ping(args):
 
 def cmd_state(args):
     config = load(args.config)
-    from mxo import Mxo
-    scope = Mxo(config)
+    from bench import make_scope
+    scope = make_scope(config)
     try:
         return emit(dict(ok=True, state=read_state(scope)))
     finally:
@@ -125,8 +125,8 @@ def cmd_raw(args):
     if "*RST" in command.upper() or "*CLS" in command.upper():
         return fail("That command changes instrument state; refusing: " + command)
     config = load(args.config)
-    from mxo import Mxo
-    scope = Mxo(config)
+    from bench import make_scope
+    scope = make_scope(config)
     try:
         return emit(dict(ok=True, command=command, response=scope.query(command)))
     finally:
@@ -247,12 +247,24 @@ def cmd_capture_start(args):
                "--directory", str(directory)]
     if args.worker:
         command.extend(["--worker", str(args.worker)])
+    # This runs over SSH. Windows OpenSSH puts the session in a job object and
+    # tears the whole job down when the connection closes, which silently kills a
+    # merely-DETACHED child (observed: the worker never even wrote status.json).
+    # CREATE_BREAKAWAY_FROM_JOB is what lets the worker outlive the SSH session.
+    flags = (getattr(subprocess, "DETACHED_PROCESS", 0) |
+             getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0))
+    breakaway = getattr(subprocess, "CREATE_BREAKAWAY_FROM_JOB", 0x01000000)
     with open(log_path, "ab") as log:
-        process = subprocess.Popen(
-            command,
-            stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
-            creationflags=getattr(subprocess, "DETACHED_PROCESS", 0) |
-                          getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0))
+        try:
+            process = subprocess.Popen(
+                command, stdout=log, stderr=subprocess.STDOUT,
+                stdin=subprocess.DEVNULL, creationflags=flags | breakaway)
+        except OSError:
+            # Job does not permit breakaway: fall back and rely on the caller
+            # keeping the SSH session open until the worker exits.
+            process = subprocess.Popen(
+                command, stdout=log, stderr=subprocess.STDOUT,
+                stdin=subprocess.DEVNULL, creationflags=flags)
     (workdir / "worker.pid").write_text(str(process.pid), encoding="utf-8")
     return emit(dict(ok=True, started=True, pid=process.pid, directory=str(directory),
                      log=str(log_path)))

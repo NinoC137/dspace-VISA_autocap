@@ -1,0 +1,17 @@
+﻿case_id,enabled,VL_V,xi,ud_ref6,ud_ref7,phi_deg,note
+PS5_X0515_P000,true,120,0.515,60,60,0,fixed_phase_5deg_grid
+PS5_X0515_P005,true,120,0.515,60,60,5,fixed_phase_5deg_grid
+PS5_X0515_P010,true,120,0.515,60,60,10,fixed_phase_5deg_grid
+PS5_X0515_P015,true,120,0.515,60,60,15,fixed_phase_5deg_grid
+PS5_X0515_P020,true,120,0.515,60,60,20,fixed_phase_5deg_grid
+PS5_X0515_P025,true,120,0.515,60,60,25,fixed_phase_5deg_grid
+PS5_X0515_P030,true,120,0.515,60,60,30,fixed_phase_5deg_grid
+PS5_X0515_P035,true,120,0.515,60,60,35,fixed_phase_5deg_grid
+PS5_X0515_P040,true,120,0.515,60,60,40,fixed_phase_5deg_grid
+PS5_X0515_P045,true,120,0.515,60,60,45,fixed_phase_5deg_grid
+PS5_X0515_P050,true,120,0.515,60,60,50,fixed_phase_5deg_grid
+PS5_X0515_P055,true,120,0.515,60,60,55,fixed_phase_5deg_grid
+PS5_X0515_P060,true,120,0.515,60,60,60,fixed_phase_5deg_grid
+PS5_X0515_P065,true,120,0.515,60,60,65,fixed_phase_5deg_grid
+PS5_X0515_P070,true,120,0.515,60,60,70,fixed_phase_5deg_grid
+PS5_X0515_P075,true,120,0.515,60,60,75,fixed_phase_5deg_grid

@@ -1,10 +1,11 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [ValidateSet('Plan','Check','Run')][string]$Mode = 'Plan',
     [ValidateSet(0,100,120,140,160)][int]$LowVoltage = 0,
     [string]$CasesPath = '', [string]$GroupsPath = '', [string]$ObservationsPath = '', [string]$OutputDirectory = '',
     [string]$ScopeConfig = '', [string]$PythonExecutable = '', [string]$StopFile = '',
-    [double]$Duration = 0
+    [double]$Duration = 0,
+    [string]$ScopeWorkerScript = ''
 )
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
@@ -12,6 +13,7 @@ $ProgressPreference = 'SilentlyContinue'
 Set-StrictMode -Version 2.0
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 . (Join-Path $PSScriptRoot 'sweep_core.ps1')
+. (Join-Path $PSScriptRoot 'direct_recording.ps1')
 if (-not $CasesPath) { $CasesPath = Join-Path $ProjectRoot 'config\sweep_cases.csv' }
 if (-not $GroupsPath) { $GroupsPath = Join-Path $ProjectRoot 'config\waveform_groups.json' }
 $scope = $null
@@ -22,7 +24,8 @@ $stopMarker = ''
 if ($StopFile) { $stopMarker = $StopFile + '.used' }
 if ($ScopeConfig) {
     $ScopeConfig = (Resolve-Path -LiteralPath $ScopeConfig).Path
-    $scopeScript = Join-Path $ProjectRoot 'scope_bench\bench.py'
+    $scopeScript = if ($ScopeWorkerScript) { (Resolve-Path -LiteralPath $ScopeWorkerScript).Path } `
+        else { Join-Path $ProjectRoot 'scope_bench\bench.py' }
     if (-not $PythonExecutable) { $PythonExecutable = Join-Path $ProjectRoot 'scope_bench\.venv\Scripts\python.exe' }
     foreach ($p in @($PythonExecutable, $scopeScript, $ScopeConfig)) {
         if ($p.Contains('"') -or -not (Test-Path -LiteralPath $p)) { throw ('Invalid/missing path: ' + $p) }
@@ -119,6 +122,10 @@ foreach ($spec in $observationSpecs) {
 $mdm = $app.MeasurementDataManagement
 # Reuse the exact live measurement definitions; do not replace the user's signal list.
 foreach ($g in $groups) {
+    if (Test-SweepDirectGroup $g) {
+        Test-SweepDirectSignals $description $g
+        continue
+    }
     $layouts = @($app.LayoutManagement.Layouts | Where-Object Name -eq $g.Layout)
     if ($layouts.Count -ne 1) { throw ('Expected one loaded layout: ' + $g.Layout) }
     $instruments = @($layouts[0].Instruments | Where-Object Name -eq $g.Instrument)
@@ -180,6 +187,8 @@ try {
     $armed = $true
     if ($null -ne $access.WorkingDataSet) { $access.WorkingDataSet.Activate() }
     if ((Read-ComScalar $variables.Enable) -ne 0) { throw 'Calibration context Enable1 is not 0.' }
+    # Resolve every required signal before configuring or enabling the rig.
+    Register-SweepDirectSignals $mdm $groups
     $runDirectory = Join-Path $OutputDirectory ('VL_' + $LowVoltage + '\run_' + (Get-Date -Format 'yyyyMMdd_HHmmss_fff') + '_' + $PID)
     [void](New-Item -ItemType Directory -Path $runDirectory)
     $plan | Export-Csv (Join-Path $runDirectory 'plan.csv') -NoTypeInformation -Encoding UTF8

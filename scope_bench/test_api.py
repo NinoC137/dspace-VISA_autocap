@@ -18,9 +18,18 @@ FAKE_WORKER = HERE / "test_api_fake_worker.py"
 PYTHON = sys.executable
 
 
+#: Set by setUp to a pinned MXO38 config; None means "use the deployed one".
+#: These tests fake the instrument, so they must not depend on which oscilloscope
+#: bench_config.json currently points at (switch-scope.cmd changes that).
+CONFIG_PATH = [None]
+
+
 def run_api(*args, timeout=120):
     """Run one scope_api subcommand and return (json, returncode, stderr)."""
-    result = subprocess.run([PYTHON, "-u", str(API), *args],
+    prefix = []
+    if CONFIG_PATH[0] and "--config" not in args:
+        prefix = ["--config", CONFIG_PATH[0]]      # --config is a global option
+    result = subprocess.run([PYTHON, "-u", str(API), *prefix, *args],
                             capture_output=True, text=True, timeout=timeout)
     lines = [line for line in result.stdout.splitlines() if line.strip()]
     if not lines:
@@ -30,6 +39,19 @@ def run_api(*args, timeout=120):
 
 class ScopeApiTests(unittest.TestCase):
     def setUp(self):
+        # Pin the instrument section to the MXO38 the fake sessions emulate.
+        import common
+        pinned = common.load_config(HERE / "bench_config.json")
+        pinned["instrument"].update({
+            "resource": "USB0::0x0AAD::0x0197::1335.2050k08-101400::INSTR",
+            "expected_model": "MXO38",
+            "expected_serial": "1335.2050k08/101400",
+            "transport": "local_visa"})
+        pin_dir = tempfile.mkdtemp(prefix="api-cfg-")
+        self.addCleanup(lambda: None)
+        cfg_path = Path(pin_dir) / "bench_config.json"
+        cfg_path.write_text(json.dumps(pinned), encoding="utf-8")
+        CONFIG_PATH[0] = str(cfg_path)
         self.tmp = tempfile.TemporaryDirectory()
         def cleanup():
             # The final status may arrive just before the detached process releases

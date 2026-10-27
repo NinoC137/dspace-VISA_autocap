@@ -10,8 +10,21 @@ import traceback
 from common import atomic_json, load_config, read_json, selected_channels
 
 
-def worker(config, directory, scope_factory=None, standalone=False):
+def make_scope(config, session=None):
+    """Pick the instrument backend from instrument.transport.
+
+    mxo.Mxo is Rohde & Schwarz SCPI only; Tektronix instruments need the dialect
+    adapter in tek.py. Everything downstream (bench/screenshots/analysis) only
+    sees the shared surface, so this is the single place that chooses.
+    """
+    if config["instrument"].get("transport") == "tek_socket":
+        from tek import Tek
+        return Tek(config, session=session)
     from mxo import Mxo
+    return Mxo(config, session=session)
+
+
+def worker(config, directory, scope_factory=None, standalone=False):
     from analysis import analyze_file
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
@@ -43,7 +56,7 @@ def worker(config, directory, scope_factory=None, standalone=False):
     try:
         status("starting")
         atomic_json(directory / "config.json", config)
-        scope = (scope_factory or Mxo)(config)
+        scope = (scope_factory or make_scope)(config)
         scope.prepare(directory)
         status("prepared")
         wait_command("acquire")
@@ -124,8 +137,7 @@ def main():
                               channels=selected_channels(config), timing=config["timing"],
                               acquisition=config["acquisition"]), indent=2), flush=True)
     elif args.action == "check":
-        from mxo import Mxo
-        scope = Mxo(config)
+        scope = make_scope(config)
         try:
             print(json.dumps(scope.snapshot(), indent=2), flush=True)
         finally:

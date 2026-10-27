@@ -1,0 +1,3 @@
+case_id,enabled,VL_V,xi,ud_ref6,ud_ref7,phi_deg,note
+YAO_S1_X0515_P000,true,120,0.515,60,60,0,no_carrier_shift_reference
+YAO_S2_X0515_P090,true,120,0.515,60,60,90,Yao_eq15_N2_carrier_only_adaptation

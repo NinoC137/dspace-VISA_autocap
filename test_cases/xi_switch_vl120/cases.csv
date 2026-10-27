@@ -1,0 +1,4 @@
+case_id,enabled,VL_V,xi,ud_ref6,ud_ref7,phi_deg,note
+XSW_090,true,120,0.4,60,60,90,fixed90
+XSW_180,true,120,0.4,60,60,180,fixed180
+XSW_ADAPT,true,120,0.4,60,60,90,adaptive

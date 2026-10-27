@@ -1,0 +1,56 @@
+[
+  {
+    "Name": "meas1abc",
+    "Layout": "Layout1",
+    "Instrument": "Time Plotter_25",
+    "Signals": [
+      "Platform(HostService)://Model Root/measa1/In1",
+      "Platform(HostService)://Model Root/measb1/In1",
+      "Platform(HostService)://Model Root/measc1/In1"
+    ]
+  },
+  {
+    "Name": "meas2abc",
+    "Layout": "Layout1",
+    "Instrument": "Time Plotter_26",
+    "Signals": [
+      "Platform(HostService)://Model Root/measa2/In1",
+      "Platform(HostService)://Model Root/measb2/In1",
+      "Platform(HostService)://Model Root/measc2/In1"
+    ]
+  },
+  {
+    "Name": "ripple_current_rec",
+    "Source": "Direct",
+    "Signals": [
+      "Platform(HostService)://Model Root/MATLAB Function13/IP_avg",
+      "Platform(HostService)://Model Root/MATLAB Function13/IO_avg",
+      "Platform(HostService)://Model Root/MATLAB Function13/IH_avg_hat",
+      "Platform(HostService)://Model Root/MATLAB Function13/nodeMean",
+      "Platform(HostService)://Model Root/MATLAB Function13/nodeCoeff",
+      "Platform(HostService)://Model Root/MATLAB Function13/reconReady"
+    ],
+    "Telemetry": {
+      "sample_period_s": 0.0001,
+      "quantities": {
+        "IP_avg": "sum of reconstructed per-port P-node carrier-cell means [A]",
+        "IO_avg": "sum of reconstructed per-port O-node carrier-cell means [A]",
+        "IH_avg_hat": "DC source-path projection IP_avg + BETA_LH*IO_avg [A]; not measured IH",
+        "nodeMean": "[IP1_avg,IO1_avg,IP2_avg,IO2_avg] [A]",
+        "nodeCoeff": "16 real values; port1 n1,n2, port2 n1,n2; each [Re cP,Im cP,Re cO,Im cO] [A]; local carrier frames; coefficients c, not amplitude 2c",
+        "reconReady": "true once duty latency history has filled; independent of original window valid"
+      },
+      "scope": "CH1 measured IH remains 125 kSa/s; all scope channels unchanged",
+      "warning": "10 kHz scalar samples cannot resolve switching-frequency waveforms. Existing coefficient envelopes allow model-based spectral recomputation."
+    }
+  },
+  {
+    "Name": "phase_angles",
+    "Layout": "Layout1",
+    "Instrument": "Time Plotter_31_46",
+    "Signals": [
+      "Platform(HostService)://Model Root/phi_search/In1",
+      "Platform(HostService)://Model Root/phi_opt/In1"
+    ]
+  }
+]
